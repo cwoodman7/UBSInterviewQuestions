@@ -123,6 +123,14 @@ class Model:
             print(results.summary())
             IS_statistics = {'RMSE': np.round(results.mse_resid, 3), 'R-Squared': np.round(results.rsquared, 3),
                              'Adj R-Squared': np.round(results.rsquared_adj, 3)}
+        
+        # residual het test
+        resids = np.array(self.y.copy()).reshape(len(self.y)) - np.array(fitted_values)
+        ones = np.ones(len(fitted_values)).reshape(len(fitted_values), 1)
+        regs = np.concatenate([ones, np.array(fitted_values).reshape(len(fitted_values), 1)], axis=1)
+        l, lp, f, fp = sm.stats.diagnostic.het_white(resids, regs)
+        print(f"Lagrange Multiplier p-statistic for White het test: {lp} \n")
+        
         return beta_hat, fitted_values, IS_statistics
 
     def __update_data(self, orig_X, level_X, **kwargs):
