@@ -12,9 +12,6 @@ def load_data(file):
     """Returns a list containing the complete time-series for each variable."""
     df = pd.read_csv(file, index_col=0)
 
-    #re-write this - make a new df where data are organised in columns. We can then use the row labels to help with
-    #identifying missing observations
-
     indices = np.arange(4)
     series = np.array([df.values[i] for i in indices])
     comp_series = []
